@@ -1,22 +1,22 @@
 import pandas as pd
 
 def compute_stats(csv_path):
-    #Read CSV
+    # Read CSV
     df = pd.read_csv(csv_path)
 
     stats = {}
-    #Transform string to real date
+    # Transform string to real date
     df["start_time"] = pd.to_datetime(df["start_time"])
     df["end_time"] = pd.to_datetime(df["end_time"])
 
     stats["total_workouts"] = df["start_time"].nunique()
 
-    #Build workout Table 
+    # Build workout Table 
     workouts = df.drop_duplicates(subset="start_time") #drop_duplicates() erstellt direkt eine Tabelle
     workouts = workouts[["title", "start_time", "end_time"]]
     workouts["duration"] = workouts["end_time"] - workouts["start_time"]
 
-    #Calculate metrics
+    # Calculate metrics
     seconds_per_workout = workouts["duration"].dt.total_seconds()
     minutes_per_workout = seconds_per_workout / 60
     hours_per_workout = minutes_per_workout / 60
@@ -24,7 +24,7 @@ def compute_stats(csv_path):
 
     stats["favorite_hour"] = workouts["start_time"].dt.hour.value_counts().index[0] #am häufigsten ein Workout gestartet
 
-    #Workouts per month und best month
+    # Workouts per month und best month
     workouts_per_month = workouts["start_time"].dt.month.value_counts().sort_index()
     stats["best_month"] = workouts_per_month.idxmax()
 
@@ -32,5 +32,7 @@ def compute_stats(csv_path):
     stats["top_exercises"]= df["exercise_title"].value_counts().head(5)
     print(stats)
 
+    # Personal Records
+    stats["personal_records"] =df.groupby("exercise_title")["weight_kg"].max().sort_values(ascending=False).head(5)
 
     return stats
