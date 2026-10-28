@@ -35,4 +35,7 @@ def compute_stats(csv_path):
     # Personal Records
     stats["personal_records"] =df.groupby("exercise_title")["weight_kg"].max().sort_values(ascending=False).head(5)
 
+    # Total Volume
+    df["volume"] = df["weight_kg"] * df["reps"]
+    stats["total_volume_kg"] = df["volume"].sum()
     return stats
