@@ -24,4 +24,13 @@ def compute_stats(csv_path):
 
     stats["favorite_hour"] = workouts["start_time"].dt.hour.value_counts().index[0] #am häufigsten ein Workout gestartet
 
+    #Workouts per month und best month
+    workouts_per_month = workouts["start_time"].dt.month.value_counts().sort_index()
+    stats["best_month"] = workouts_per_month.idxmax()
+
+    # Top 5 Excersises
+    stats["top_exercises"]= df["exercise_title"].value_counts().head(5)
+    print(stats)
+
+
     return stats
