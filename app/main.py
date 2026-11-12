@@ -1,5 +1,5 @@
 import sys
-from PySide6.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout,QPushButton   #Are the programs that every QtApp needs / Qlabel displays text
+from PySide6.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout,QPushButton, QFileDialog   #Are the programs that every QtApp needs / Qlabel displays text
 from stats import compute_stats
 
 class MainWindow(QWidget):
@@ -16,7 +16,14 @@ class MainWindow(QWidget):
         self.setLayout(layout)
 
     def handle_click(self):
-        print("Button geklickt!")
+        filename, _ = QFileDialog.getOpenFileName(self, "Open CSV", "","CSV-File(*.csv)")
+        if filename == "":
+            print("File was not imported!")
+        else:
+            self.stats = compute_stats(filename)
+            print(self.stats)
+
+    
 
 
 

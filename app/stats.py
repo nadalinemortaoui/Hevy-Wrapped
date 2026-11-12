@@ -30,7 +30,7 @@ def compute_stats(csv_path):
 
     # Top 5 Excersises
     stats["top_exercises"]= df["exercise_title"].value_counts().head(5)
-    print(stats)
+    
 
     # Personal Records
     stats["personal_records"] =df.groupby("exercise_title")["weight_kg"].max().sort_values(ascending=False).head(5)
